@@ -1,21 +1,35 @@
-<input type="text" [(ngModel)]="actualCat"><button (click)="addCategory()">ADD CAT</button>
-<input type="text" [(ngModel)]="actualLeg"><button (click)="addLegendItem()">ADD LEGEND</button>
-<button (click)="emit()">MAKE CHART</button>
-<table>
-    <thead>
-    <tr>
-        <th>Category</th>
-        <th *ngFor="let item of legendItems">{{item}}</th>
-    </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let item of data">
-            <td>
-                {{item.category}}
-            </td>
-            <td *ngFor="let val of item.vals">
-                <input [(ngModel)]="val.value">
-            </td>
+<h1 (click)="demo()">DEMO</h1>
+<div class="legend-bar-chart">
+    <div class="inputs">
+        <div class="cat_leg">
+            <input type="text" [(ngModel)]="actualCat"><button (click)="addCategory()">ADD CATEGORY</button>
+            <input type="text" [(ngModel)]="actualLeg"><button (click)="addLegendItem()">ADD ITEM LEGEND
+            </button>
+        </div>
+        <div>
+            Horizontal <input type="checkbox" [(ngModel)]="horizontal">
+        </div>
+        <div>
+            Stacked <input type="checkbox" [(ngModel)]="stacked" value="stacked">
+        </div>
+    </div>
+    <button (click)="emit()">MAKE CHART</button>
+    <table>
+        <thead>
+        <tr>
+            <th>Category</th>
+            <th *ngFor="let item of legendItems">{{item}}</th>
         </tr>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of data">
+                <td>
+                    {{item.category}}
+                </td>
+                <td *ngFor="let val of item.vals">
+                    <input [(ngModel)]="val.value">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

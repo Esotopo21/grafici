@@ -23,6 +23,9 @@ export class ChartComponent implements OnInit {
 
   public chartTypeEnum = ChartTypeEnum;
 
+  public colorList = [];
+  public actualColor = {};
+
   ngOnInit(): void {
   }
 
@@ -35,11 +38,17 @@ export class ChartComponent implements OnInit {
     console.log('receving');
     switch (Number($event.type)){
       case 0:
-        createSimpleXYChart($event.data, $event.colorList);
+        createSimpleXYChart($event.data, this.colorList);
         break;
       case 1:
-        createXYLegendChart($event.data, null, true, false);
+        createXYLegendChart($event.data, this.colorList, $event.stacked, $event.horizontal);
         break;
+    }
+  }
+
+  public addColor(color): void{
+    if (typeof color === 'string'){
+      this.colorList.push({hexa: color, enabled: true});
     }
   }
 }

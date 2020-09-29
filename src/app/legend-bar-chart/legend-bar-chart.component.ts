@@ -41,6 +41,22 @@ export class LegendBarChartComponent implements OnInit {
     this.actualCat = null;
   }
 
+  public demo(){
+    this.actualCat = '2010';
+    this.addCategory();
+    this.actualCat = '2020';
+    this.addCategory();
+    this.actualLeg = 'Spain';
+    this.addLegendItem();
+    this.actualLeg = 'World'
+    this.addLegendItem();
+    this.data[0].vals[0].value = 150;
+    this.data[0].vals[1].value = 200;
+    this.data[1].vals[0].value = 300;
+    this.data[1].vals[1].value = 500;
+
+  }
+
   public addLegendItem(): void{
     if (this.actualLeg){
       this.legendItems.push(this.actualLeg);
@@ -52,7 +68,7 @@ export class LegendBarChartComponent implements OnInit {
   }
 
   public emit(): void{
-    this.emitter.emit({data: this.data, type: ChartTypeEnum.LEGEND});
+    this.emitter.emit({data: this.data, type: ChartTypeEnum.LEGEND, stacked: this.stacked, horizontal: this.horizontal});
   }
 
 }

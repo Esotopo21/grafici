@@ -7,6 +7,16 @@
                 {{type.label}}
             </option>
         </select>
+        <div class="color">
+            <input ejs-colorpicker type="color" id="colorpicker" [(ngModel)]="actualColor" >
+            <button (click)="addColor(actualColor)">ADD COLOR</button>
+            <ul style="display: flex;">
+                <li style="display: inline-flex;" *ngFor="let color of colorList">
+                    <div display="block" [ngStyle]="{'background': color.hexa}" style="width: 25px; height: 25px;"></div>
+                    <input type="checkbox" [(ngModel)]="color.enabled"> 
+                </li>
+            </ul> 
+        </div>
     </div>
 
     <app-simple-bar-chart *ngIf="chartType.value == chartTypeEnum.XY" (emitter)="createChart($event)"></app-simple-bar-chart>

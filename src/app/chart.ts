@@ -63,32 +63,6 @@ export function createSimpleXYChart(data, colorList): any{
 
 }
 
-export const dataf = [{
-  'year': '2016',
-  'Europe': 2.5,
-  'North America': 2.5,
-  'Asia': 2.1,
-  'Latin America': 0.3,
-  'Middle east': 0.2,
-  'Africa': 0.1
-}, {
-  'year': '2017',
-  'Europe': 2.6,
-  'North America': 2.7,
-  'Asia': 2.2,
-  'Latin America': 0.3,
-  'Middle east': 0.3,
-  'Africa': 0.1
-}, {
-  'year': '2018',
-  'Europe': 2.8,
-  'North America': 2.9,
-  'Asia': 2.4,
-  'Latin America': 0.3,
-  'Middle east': 0.3,
-  'Africa': 0.1
-}];
-
 function parseLegendBarData(data: LegendBarData[]): any[]{
   const dataList = [];
   data.forEach((el => {
@@ -109,6 +83,14 @@ export function createXYLegendChart(data: LegendBarData[], colorList, stacked?, 
 
   chart.data = parseLegendBarData(data);
 
+  const colorMap = new Map<string, am4core.Color>();
+
+  if(colorList){
+    for (let i = 0; i < itemList.length; i++){
+      colorMap.set(itemList[i], colorList[i] ? am4core.color(colorList[i].hexa) : null);
+    }
+  }
+
   chart.legend = new am4charts.Legend();
   chart.legend.position = 'right';
 
@@ -117,12 +99,12 @@ export function createXYLegendChart(data: LegendBarData[], colorList, stacked?, 
 
   const valueAxis = horizontal ? chart.xAxes.push(new am4charts.ValueAxis()) : chart.yAxes.push(new am4charts.ValueAxis());
 
-  itemList.forEach((el) => createSeries(chart, el, stacked, horizontal));
+  itemList.forEach((el) => createSeries(chart, colorMap, el, stacked, horizontal));
 
 
 }
 
-function createSeries(chart, name, stacked?, horizontal?): any {
+function createSeries(chart, colorMap, name, stacked?, horizontal?): any {
   const series = chart.series.push(new am4charts.ColumnSeries());
   if (horizontal){
     series.dataFields.categoryY = 'category';
@@ -135,6 +117,18 @@ function createSeries(chart, name, stacked?, horizontal?): any {
 
   series.stacked = stacked ? stacked : false;
   series.name = name;
+
+  // Can we do something better in order to avoid mandatory of color map?
+
+  series.columns.template.adapter.add('fill', function(fill, target) {
+    const color = colorMap.get(name);
+    return color ? color : chart.colors.getIndex(target.dataItem.index);
+  });
+
+  series.columns.template.adapter.add('stroke', function(fill, target) {
+    const color = colorMap.get(name);
+    return color ? color : chart.colors.getIndex(target.dataItem.index);
+  });
 
   const labelBullet = series.bullets.push(new am4charts.LabelBullet());
   labelBullet.locationX = 0.5;

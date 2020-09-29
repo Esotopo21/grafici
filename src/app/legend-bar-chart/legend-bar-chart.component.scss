@@ -1,5 +1,16 @@
-table{
-    th, th{
-        border: 2px solid black;
+.legend-bar-chart{
+    .inputs{
+        display: flex;
+        flex-flow: column;
+        width: 40%;
+        .cat-leg{
+            display: flex;
+            flex-flow: row;
+        }
+    }
+    table{
+        th, th{
+            border: 2px solid black;
+        }
     }
 }

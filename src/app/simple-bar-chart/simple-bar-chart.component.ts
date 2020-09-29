@@ -32,12 +32,6 @@ export class SimpleBarChartComponent implements OnInit {
     return this.data;
   }
 
-  public addColor(color): void{
-    if (typeof color === 'string'){
-      this.colorList.push({hexa: color, enabled: true});
-    }
-  }
-
   public emit(): void{
     console.log('emitting');
     this.emitter.emit({data: this.data, colorList: this.colorList, type: ChartTypeEnum.XY});
