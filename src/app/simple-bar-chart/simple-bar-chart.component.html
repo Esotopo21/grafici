@@ -1,0 +1,20 @@
+<div class="no-graph">
+    <form class="data-area" style="width: 25%;">
+        <div *ngFor="let d of getData; let i = index">
+            <input type="text" name="dCategory_{{i}}" style="width: 50%" [(ngModel)]="d.category" >
+            <input type="text" name="dValue_{{i}}" style="width: 50%" [(ngModel)]="d.value"  >
+        </div>
+        <button (click)="addData()">ADD</button>
+        <button (click)="emit()">MAKE CHART</button>
+    </form>
+    <div class="color">
+    <input ejs-colorpicker type="color" id="colorpicker" [(ngModel)]="actualColor" >
+    <button (click)="addColor(actualColor)">ADD COLOR</button>
+    <ul style="display: flex;">
+        <li style="display: inline-flex;" *ngFor="let color of colorList">
+            <div display="block" [ngStyle]="{'background': color.hexa}" style="width: 25px; height: 25px;"></div>
+            <input type="checkbox" [(ngModel)]="color.enabled"> 
+        </li>
+    </ul> 
+    </div>
+</div>

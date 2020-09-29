@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as am4core from '@amcharts/amcharts4/core';
 import * as am4charts from '@amcharts/amcharts4/charts';
-import { createBarChart, createXYchart, PIECHART } from '../chart';
+import { ChartType, ChartTypeDropdown, ChartTypeEnum, createSimpleXYChart, createXYLegendChart, PIECHART } from '../chart';
 import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
 import { BarData } from '../BarData';
 import { CColor } from '../color';
@@ -18,72 +18,30 @@ export class ChartComponent implements OnInit {
 
   public chartWidth = '1024px';
 
-  public data: BarData[] = [{value: 5, category: 's', color: '#ffffff'}];
-  public colorList: CColor[] = [];
-  public actualColor = {};
+  public chartType: ChartType = {label: 'Select chart type', value: null};
+  public chartTypeDropdown = ChartTypeDropdown;
 
-  ngOnInit(): void {}
+  public chartTypeEnum = ChartTypeEnum;
 
-  public addData(){
-    const temp = [...this.data];
-    temp.push(new BarData());
-    this.data = temp;
+  ngOnInit(): void {
   }
 
-  get getData(): BarData[]{
-    return this.data;
+  public logger(el){
+    console.log(el);
+    console.log(ChartTypeEnum.LEGEND);
   }
 
-  public createChart(){
-      const chart = am4core.create('chartdiv', am4charts.XYChart);
-      chart.colors.list.slice(0, 0);
-      chart.data = this.data.filter((d: BarData) => d.value && d.category);
-      chart.numberFormatter.numberFormat = '#';
-      chart.exporting.menu = new am4core.ExportMenu();
-      chart.logo.disabled = true;
-      if (this.colorList){
-        this.colorList.forEach((color) => {
-          if (color && color.hexa && color.hexa.length > 0 && color.enabled){
-            chart.colors.list.push(am4core.color(color.hexa));
-          }
-        });
-      }
-      chart.colors.list.push();
-
-      const categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-      categoryAxis.dataFields.category = 'category';
-      categoryAxis.renderer.labels.template.horizontalCenter = 'middle';
-      categoryAxis.renderer.labels.template.verticalCenter = 'middle';
-      categoryAxis.tooltip.disabled = true;
-      categoryAxis.renderer.minHeight = 110;
-
-      const valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-      valueAxis.renderer.minWidth = 50;
-
-      const series = chart.series.push(new am4charts.ColumnSeries());
-      series.sequencedInterpolation = true;
-      series.dataFields.valueY = 'value';
-      series.dataFields.categoryX = 'category';
-      series.columns.template.strokeWidth = 0;
-
-
-      series.columns.template.column.cornerRadiusTopLeft = 5;
-      series.columns.template.column.cornerRadiusTopRight = 5;
-      series.columns.template.column.fillOpacity = 1;
-
-      series.columns.template.adapter.add("fill", function(fill, target) {
-        return chart.colors.getIndex(target.dataItem.index);
-      });
-
+  public createChart($event): void{
+    console.log('receving');
+    switch (Number($event.type)){
+      case 0:
+        createSimpleXYChart($event.data, $event.colorList);
+        break;
+      case 1:
+        createXYLegendChart($event.data, null, true, false);
+        break;
     }
-
-    public addColor(color){
-      if (typeof color === 'string'){
-        this.colorList.push({hexa: color, enabled: true});
-      }
-      console.log(this.colorList);
-    }
-
   }
+}
 
 

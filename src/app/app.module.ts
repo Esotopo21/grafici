@@ -7,11 +7,15 @@ import { AppComponent } from './app.component';
 import { ChartComponent } from './chart/chart.component';
 import { FormsModule } from '@angular/forms';
 import { ColorPickerModule } from '@syncfusion/ej2-angular-inputs';
+import { SimpleBarChartComponent } from './simple-bar-chart/simple-bar-chart.component';
+import { LegendBarChartComponent } from './legend-bar-chart/legend-bar-chart.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ChartComponent
+    ChartComponent,
+    SimpleBarChartComponent,
+    LegendBarChartComponent
   ],
   imports: [
     BrowserModule,
